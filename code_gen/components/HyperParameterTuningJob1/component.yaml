@@ -1,0 +1,100 @@
+name: "Sagemaker - HyperParameterTuningJob"
+description: Create HyperParameterTuningJob
+inputs:
+  ###########################GENERATED SECTION BELOW############################
+  
+  - {
+      name: hyper_parameter_tuning_job_config,
+      type: JsonObject,
+      default: '{}',
+      description: "The HyperParameterTuningJobConfig object that desc",
+    }
+  - {
+      name: hyper_parameter_tuning_job_name,
+      type: String,
+      default: '',
+      description: "The name of the tuning job. This name is the prefi",
+    }
+  - {
+      name: tags,
+      type: JsonArray,
+      default: '[]',
+      description: "An array of key-value pairs. You can use tags to c",
+    }
+  - {
+      name: training_job_definition,
+      type: JsonObject,
+      default: '{}',
+      description: "The HyperParameterTrainingJobDefinition object tha",
+    }
+  - {
+      name: training_job_definitions,
+      type: JsonArray,
+      default: '[]',
+      description: "A list of the HyperParameterTrainingJobDefinition ",
+    }
+  - {
+      name: warm_start_config,
+      type: JsonObject,
+      default: '{}',
+      description: "Specifies the configuration for starting the hyper",
+    }
+  ###########################GENERATED SECTION ABOVE############################
+
+outputs:
+  ###########################GENERATED SECTION BELOW############################
+  
+#  - {
+#      name: ack_resource_metadata,
+#      type: JsonObject,
+#      description: "All CRs managed by ACK have a common `Status.ACKRe",
+#    }
+#  - {
+#      name: best_training_job,
+#      type: JsonObject,
+#      description: "A TrainingJobSummary object that describes the tra",
+#    }
+#  - {
+#      name: conditions,
+#      type: JsonArray,
+#      description: "All CRS managed by ACK have a common `Status.Condi",
+#    }
+#  - {
+#      name: failure_reason,
+#      type: String,
+#      description: "If the tuning job failed, the reason it failed.",
+#    }
+#  - {
+#      name: hyper_parameter_tuning_job_status,
+#      type: String,
+#      description: "The status of the tuning job: InProgress, Complete",
+#    }
+#  - {
+#      name: overall_best_training_job,
+#      type: JsonObject,
+#      description: "If the hyperparameter tuning job is an warm start ",
+#    }
+  ###########################GENERATED SECTION ABOVE############################
+
+implementation:
+  container:
+    image: rdpen/kfp-component-sagemaker:5
+    command: [python3]
+    args:
+      - code_gen/components/HyperParameterTuningJob1/src/HyperParameterTuningJob.py
+      ###########################GENERATED SECTION BELOW############################
+      - --hyper_parameter_tuning_job_config
+      - { inputValue: hyper_parameter_tuning_job_config }
+      - --hyper_parameter_tuning_job_name
+      - { inputValue: hyper_parameter_tuning_job_name }
+      - --tags
+      - { inputValue: tags }
+      - --training_job_definition
+      - { inputValue: training_job_definition }
+      - --training_job_definitions
+      - { inputValue: training_job_definitions }
+      - --warm_start_config
+      - { inputValue: warm_start_config }
+      
+      ###########################GENERATED SECTION ABOVE############################
+

@@ -14,12 +14,12 @@
 from dataclasses import dataclass
 
 from typing import List
-from common.sagemaker_component_spec import (
+from code_gen.common.sagemaker_component_spec import (
     SageMakerComponentSpec,
     SageMakerComponentBaseOutputs,
 )
-from common.spec_input_parsers import SpecInputParsers
-from common.common_inputs import (
+from code_gen.common.spec_input_parsers import SpecInputParsers
+from code_gen.common.common_inputs import (
     COMMON_INPUTS,
     SageMakerComponentCommonInputs,
     SpotInstanceInputs,
@@ -72,7 +72,9 @@ class SageMakerTrainingSpec(
 ):
     INPUTS: SageMakerTrainingInputs = SageMakerTrainingInputs(
         job_name=InputValidator(
-            input_type=str, description="The name of the training job.", default="",
+            input_type=str,
+            description="The name of the training job.",
+            default="",
         ),
         role=InputValidator(
             input_type=str,

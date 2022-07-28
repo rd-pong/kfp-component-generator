@@ -1,0 +1,43 @@
+apiVersion: sagemaker.services.k8s.aws/v1alpha1
+kind: TrainingJob
+metadata:
+  name: ack-training-job-kfp-1
+spec:
+  algorithmSpecification:
+    trainingImage: 746614075791.dkr.ecr.us-west-1.amazonaws.com/sagemaker-xgboost:1.2-1
+    trainingInputMode: File
+  hyperParameters:
+    eta: "0.2"
+    gamma: "4"
+    max_depth: "5"
+    min_child_weight: "6"
+    num_class: "10"
+    num_round: "10"
+    objective: multi:softmax
+  inputDataConfig:
+    - channelName: train
+      compressionType: None
+      contentType: text/libsvm
+      dataSource:
+        s3DataSource:
+          s3DataDistributionType: FullyReplicated
+          s3DataType: S3Prefix
+          s3URI: s3://ack-sagemaker-bucket-402026529871/sagemaker/xgboost/train
+    - channelName: validation
+      compressionType: None
+      contentType: text/libsvm
+      dataSource:
+        s3DataSource:
+          s3DataDistributionType: FullyReplicated
+          s3DataType: S3Prefix
+          s3URI: s3://ack-sagemaker-bucket-402026529871/sagemaker/xgboost/validation
+  outputDataConfig:
+    s3OutputPath: s3://ack-sagemaker-bucket-402026529871
+  resourceConfig:
+    instanceCount: 1
+    instanceType: ml.m4.xlarge
+    volumeSizeInGB: 5
+  roleARN: arn:aws:iam::402026529871:role/ack-sagemaker-execution-role-402026529871
+  stoppingCondition:
+    maxRuntimeInSeconds: 86400
+  trainingJobName: ack-training-job-KFP-1

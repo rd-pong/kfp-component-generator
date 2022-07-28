@@ -1,0 +1,82 @@
+apiVersion: sagemaker.services.k8s.aws/v1alpha1
+kind: HyperParameterTuningJob
+metadata:
+  name: ack-hpo-job-kfp-4
+spec:
+  hyperParameterTuningJobConfig:
+    hyperParameterTuningJobObjective:
+      metricName: validation:error
+      type_: Minimize
+    parameterRanges:
+      categoricalParameterRanges: []
+      continuousParameterRanges: []
+      integerParameterRanges:
+        - maxValue: "20"
+          minValue: "10"
+          name: num_round
+          scalingType: Linear
+    resourceLimits:
+      maxNumberOfTrainingJobs: 10
+      maxParallelTrainingJobs: 5
+    strategy: Bayesian
+  hyperParameterTuningJobName: ack-hpo-job-kfp-4
+  trainingJobDefinition:
+    algorithmSpecification:
+      trainingImage: 632365934929.dkr.ecr.us-west-1.amazonaws.com/xgboost:1
+      trainingInputMode: File
+    enableInterContainerTrafficEncryption: false
+    enableNetworkIsolation: true
+    inputDataConfig:
+      - channelName: train
+        compressionType: None
+        contentType: text/libsvm
+        dataSource:
+          s3DataSource:
+            s3DataDistributionType: FullyReplicated
+            s3DataType: S3Prefix
+            s3URI: s3://ack-sagemaker-bucket-402026529871/sagemaker/xgboost/train
+        inputMode: File
+        recordWrapperType: None
+      - channelName: validation
+        compressionType: None
+        contentType: text/libsvm
+        dataSource:
+          s3DataSource:
+            s3DataDistributionType: FullyReplicated
+            s3DataType: S3Prefix
+            s3URI: s3://ack-sagemaker-bucket-402026529871/sagemaker/xgboost/validation
+        inputMode: File
+        recordWrapperType: None
+    outputDataConfig:
+      s3OutputPath: s3://ack-sagemaker-bucket-402026529871
+    resourceConfig:
+      instanceCount: 1
+      instanceType: ml.m4.xlarge
+      volumeSizeInGB: 25
+    roleARN: arn:aws:iam::402026529871:role/ack-sagemaker-execution-role-402026529871
+    staticHyperParameters:
+      base_score: "0.5"
+      booster: gbtree
+      csv_weights: "0"
+      dsplit: row
+      grow_policy: depthwise
+      lambda_bias: "0.0"
+      max_bin: "256"
+      max_leaves: "0"
+      normalize_type: tree
+      objective: reg:linear
+      one_drop: "0"
+      prob_buffer_row: "1.0"
+      process_type: default
+      rate_drop: "0.0"
+      refresh_leaf: "1"
+      sample_type: uniform
+      scale_pos_weight: "1.0"
+      silent: "0"
+      sketch_eps: "0.03"
+      skip_drop: "0.0"
+      tree_method: auto
+      tweedie_variance_power: "1.5"
+      updater: grow_colmaker,prune
+    stoppingCondition:
+      maxRuntimeInSeconds: 3600
